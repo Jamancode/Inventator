@@ -2034,7 +2034,7 @@ Wichtigkeit</textarea>
         // ===== ID Generation (Short IDs from bottom up) =====
         function generateItemId() {
             const id = AppState.nextId++;
-            saveDataToStorage(); // Save the updated counter
+    // saveDataToStorage(); // NICHT hier bei jeder ID-Generierung speichern
             return id.toString();
         }
 
