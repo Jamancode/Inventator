@@ -1,5 +1,5 @@
 # Inventator
-Zusammenfassung: Was ist "Smart Inventar Organizer Pro" ( Inventator)?
+Zusammenfassung: Was ist "Smart Inventar Organizer Pro" ( Inventartor )?
 
 Smart Inventar Organizer Pro ist eine hochentwickelte, browserbasierte Anwendung zur Verwaltung von Haushaltsinventar. Sie geht weit über einfache Listen hinaus und bietet eine Fülle von Funktionen, die sie zu einem leistungsstarken Organisationswerkzeug machen. Die App ist als "Single-Page-Application" konzipiert, die vollständig auf dem Gerät des Nutzers (im Browser) läuft und ihre Daten lokal speichert. Dies gewährleistet maximale Privatsphäre.
 
