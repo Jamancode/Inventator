@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sprachgesteuertes Inventar</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      background: #111;
+      color: #eee;
+      margin: 0;
+      padding: 2em;
+    }
+    textarea {
+      width: 100%;
+      height: 4em;
+      font-size: 1.2em;
+      background: #222;
+      color: #eee;
+      border: none;
+      padding: 1em;
+      border-radius: 6px;
+    }
+    button {
+      padding: 0.5em 1em;
+      font-size: 1.1em;
+      margin-top: 1em;
+      background: #2a2;
+      border: none;
+      color: white;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    #result {
+      margin-top: 2em;
+      background: #222;
+      padding: 1em;
+      border-radius: 8px;
+      white-space: pre-wrap;
+    }
+  </style>
+</head>
+<body>
+  <h1>🗣️ Sprach-Inventar</h1>
+  <textarea id="manualInput" placeholder="Gegenstand eingeben..."></textarea>
+  <button id="voiceBtn">🎤 Spracheingabe</button>
+  <div id="result"></div>
+
+  <script>
+    const data = {
+      "wohnzimmer": {
+        "schrank a": {
+          "fach 1": {
+            "kiste grün": {
+              "box a": ["fernbedienung", "kabel"]
+            }
+          }
+        }
+      },
+      "werkstatt": {
+        "metallschrank": {
+          "fach unten": {
+            "kiste schrauben": {
+              "box werkzeug": ["schraubenzieher", "zange"]
+            }
+          }
+        }
+      }
+    };
+
+    function findItem(itemName, currentLevel = data, path = []) {
+      for (const key in currentLevel) {
+        if (Array.isArray(currentLevel[key])) {
+          if (currentLevel[key].includes(itemName)) {
+            return [...path, key, itemName];
+          }
+        } else if (typeof currentLevel[key] === 'object') {
+          const result = findItem(itemName, currentLevel[key], [...path, key]);
+          if (result) return result;
+        }
+      }
+      return null;
+    }
+
+    function speak(text) {
+      if ('speechSynthesis' in window) {
+        const utterance = new SpeechSynthesisUtterance(text);
+        utterance.lang = 'de-DE';
+        speechSynthesis.speak(utterance);
+      } else {
+        console.warn("Sprachsynthese wird von diesem Browser nicht unterstützt.");
+      }
+    }
+
+    function handleInput(input) {
+      const item = input.trim().toLowerCase();
+      const result = findItem(item);
+      if (result) {
+        const output = `Dein Gegenstand liegt in:\n${result.slice(0, -1).join(" > ")}`;
+        document.getElementById("result").innerText = output;
+        speak(output);
+      } else {
+        const msg = "Ich habe diesen Gegenstand nicht gefunden.";
+        document.getElementById("result").innerText = msg;
+        speak(msg);
+      }
+    }
+
+    document.getElementById("manualInput").addEventListener("input", (e) => {
+      handleInput(e.target.value);
+    });
+
+    document.getElementById("voiceBtn").addEventListener("click", () => {
+      if (!('webkitSpeechRecognition' in window || 'SpeechRecognition' in window)) {
+        alert("Spracherkennung wird von diesem Browser nicht unterstützt.");
+        return;
+      }
+
+      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+      const recognition = new SpeechRecognition();
+      recognition.lang = 'de-DE';
+      recognition.start();
+
+      recognition.onresult = (event) => {
+        const spoken = event.results[0][0].transcript.toLowerCase();
+        document.getElementById("manualInput").value = spoken;
+        handleInput(spoken);
+      };
+
+      recognition.onerror = (event) => {
+        console.error("SpeechRecognition Fehler:", event.error);
+      };
+    });
+  </script>
+</body>
+</html>
