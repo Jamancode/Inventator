@@ -6,32 +6,38 @@
     <title>Smart Inventar Organizer Pro</title>
     <style>
         :root {
-            --primary: #2563eb;
-            --primary-dark: #1d4ed8;
-            --success: #059669;
-            --warning: #d97706;
-            --error: #dc2626;
+            --primary: #10b981;
+            --primary-dark: #059669;
+            --success: #22c55e;
+            --warning: #f59e0b;
+            --error: #ef4444;
             --surface: #ffffff;
-            --surface-alt: #f8fafc;
-            --border: #e2e8f0;
-            --text: #0f172a;
-            --text-muted: #64748b;
-            --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
-            --radius: 12px;
+            --surface-alt: #f0fdf4;
+            --border: #d1fae5;
+            --text: #064e3b;
+            --text-muted: #6b7280;
+            --shadow: 0 4px 6px -1px rgb(16 185 129 / 0.1);
+            --radius: 16px;
             --transition: all 0.3s ease;
-            --slider-track: #e2e8f0;
-            --slider-thumb: #2563eb;
-            --tree-line: #cbd5e1;
+            --slider-track: #d1fae5;
+            --slider-thumb: #10b981;
+            --tree-line: #a7f3d0;
+            --accent: #86efac;
+            --accent-light: #dcfce7;
+            --hover: #bbf7d0;
         }
 
         [data-theme="dark"] {
-            --surface: #0f172a;
-            --surface-alt: #1e293b;
-            --border: #334155;
-            --text: #f8fafc;
-            --text-muted: #94a3b8;
-            --slider-track: #334155;
-            --tree-line: #475569;
+            --surface: #064e3b;
+            --surface-alt: #0f2027;
+            --border: #065f46;
+            --text: #ecfdf5;
+            --text-muted: #a7f3d0;
+            --slider-track: #065f46;
+            --tree-line: #047857;
+            --accent: #34d399;
+            --accent-light: #064e3b;
+            --hover: #059669;
         }
 
         * {
@@ -119,6 +125,7 @@
             touch-action: manipulation;
             -webkit-user-select: none;
             user-select: none;
+            box-shadow: 0 8px 24px rgba(16, 185, 129, 0.3);
         }
 
         .mic-button:active {
@@ -127,20 +134,29 @@
 
         .mic-button.listening {
             animation: pulse 1.5s infinite;
-            background: linear-gradient(135deg, var(--error) 0%, #dc2626 100%);
+            background: linear-gradient(135deg, var(--success) 0%, #16a34a 100%);
+            box-shadow: 0 8px 32px rgba(34, 197, 94, 0.4);
         }
 
         .mic-button.processing {
             background: linear-gradient(135deg, var(--warning) 0%, #ea580c 100%);
+            box-shadow: 0 8px 32px rgba(245, 158, 11, 0.4);
         }
 
         .mic-button.speaking {
-            background: linear-gradient(135deg, var(--success) 0%, #047857 100%);
+            background: linear-gradient(135deg, var(--accent) 0%, var(--primary) 100%);
+            box-shadow: 0 8px 32px rgba(134, 239, 172, 0.4);
         }
 
         @keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.1); box-shadow: 0 0 20px rgba(37, 99, 235, 0.6); }
+            0%, 100% {
+                transform: scale(1);
+                box-shadow: 0 8px 32px rgba(34, 197, 94, 0.4);
+            }
+            50% {
+                transform: scale(1.1);
+                box-shadow: 0 12px 40px rgba(34, 197, 94, 0.6);
+            }
         }
 
         .status {
@@ -656,13 +672,14 @@
             margin-bottom: 0;
         }
 
-        /* Room Canvas Editor Enhanced */
+        /* Enhanced Canvas Editor with rounded rectangles */
         .room-canvas-container {
             background: var(--surface);
             border-radius: var(--radius);
-            padding: 1rem;
+            padding: 1.5rem;
             margin-bottom: 1rem;
             border: 1px solid var(--border);
+            box-shadow: var(--shadow);
         }
 
         .canvas-controls {
@@ -670,51 +687,111 @@
             gap: 0.5rem;
             margin-bottom: 1rem;
             flex-wrap: wrap;
+            padding: 1rem;
+            background: var(--surface-alt);
+            border-radius: var(--radius);
+            border: 1px solid var(--border);
         }
 
         .canvas-btn {
-            padding: 0.5rem 1rem;
-            border: 1px solid var(--border);
-            border-radius: var(--radius);
+            padding: 0.75rem 1.25rem;
+            border: 2px solid var(--border);
+            border-radius: calc(var(--radius) / 2);
             background: var(--surface);
             cursor: pointer;
             transition: var(--transition);
-            font-size: 0.8rem;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--text);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .canvas-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, var(--accent-light), transparent);
+            transition: left 0.5s;
+        }
+
+        .canvas-btn:hover::before {
+            left: 100%;
+        }
+
+        .canvas-btn:hover {
+            border-color: var(--primary);
+            background: var(--hover);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(16, 185, 129, 0.2);
         }
 
         .canvas-btn.active {
             background: var(--primary);
             color: white;
             border-color: var(--primary);
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
         }
 
         #roomCanvas {
-            border: 2px solid var(--border);
+            border: 3px solid var(--border);
             border-radius: var(--radius);
             cursor: crosshair;
-            background: var(--surface-alt);
+            background: linear-gradient(135deg, var(--surface-alt) 0%, var(--surface) 100%);
             width: 100%;
-            max-width: 600px;
-            height: 400px;
+            max-width: 700px;
+            height: 450px;
             position: relative;
+            box-shadow: inset 0 2px 4px rgba(16, 185, 129, 0.1);
+            transition: var(--transition);
         }
 
-        /* Rectangle editing handles */
+        #roomCanvas:hover {
+            border-color: var(--primary);
+            box-shadow: inset 0 2px 4px rgba(16, 185, 129, 0.1), 0 0 20px rgba(16, 185, 129, 0.1);
+        }
+
+        /* Enhanced resize handles with rounded corners */
         .resize-handle {
             position: absolute;
-            width: 10px;
-            height: 10px;
+            width: 12px;
+            height: 12px;
             background: var(--primary);
-            border: 2px solid white;
+            border: 3px solid white;
             border-radius: 50%;
             cursor: pointer;
             z-index: 10;
+            box-shadow: 0 2px 8px rgba(16, 185, 129, 0.3);
+            transition: var(--transition);
+        }
+
+        .resize-handle:hover {
+            background: var(--primary-dark);
+            transform: scale(1.2);
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.5);
         }
 
         .resize-handle.nw { cursor: nw-resize; }
         .resize-handle.ne { cursor: ne-resize; }
         .resize-handle.sw { cursor: sw-resize; }
         .resize-handle.se { cursor: se-resize; }
+
+        /* Rectangle selection indicator */
+        .rectangle-selected {
+            animation: selection-pulse 2s infinite;
+        }
+
+        @keyframes selection-pulse {
+            0%, 100% {
+                box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7);
+            }
+            50% {
+                box-shadow: 0 0 0 10px rgba(16, 185, 129, 0);
+            }
+        }
 
         /* Microphone selector */
         .mic-selector {
@@ -869,32 +946,58 @@
             background: var(--surface-alt);
         }
 
-        /* Statistics mobile-optimized */
+        /* Enhanced Statistics with green pastels */
         .stats {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 0.5rem;
+            gap: 1rem;
             margin-bottom: 1.5rem;
         }
 
         .stat-card {
-            background: var(--surface);
-            padding: 1rem 0.5rem;
+            background: linear-gradient(135deg, var(--surface) 0%, var(--surface-alt) 100%);
+            padding: 1.5rem 1rem;
             border-radius: var(--radius);
             text-align: center;
             box-shadow: var(--shadow);
-            border: 1px solid var(--border);
+            border: 2px solid var(--border);
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary), var(--accent), var(--primary));
+        }
+
+        .stat-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 24px rgba(16, 185, 129, 0.2);
+            border-color: var(--primary);
         }
 
         .stat-number {
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: var(--primary);
+            font-size: 2rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.5rem;
         }
 
         .stat-label {
             color: var(--text-muted);
-            font-size: 0.8rem;
+            font-size: 0.9rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
         /* Notification system */
@@ -984,17 +1087,141 @@
             }
         }
 
-        /* Dark mode improvements */
-        [data-theme="dark"] .mic-button {
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        /* Inventar-Übersicht Styling */
+        .inventory-overview {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
         }
 
-        [data-theme="dark"] .section {
-            border-color: var(--border);
+        .room-card {
+            background: linear-gradient(135deg, var(--surface) 0%, var(--surface-alt) 100%);
+            border-radius: var(--radius);
+            padding: 1.5rem;
+            border: 2px solid var(--border);
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
         }
 
-        [data-theme="dark"] .modal {
-            background: rgba(0, 0, 0, 0.8);
+        .room-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary), var(--accent), var(--primary));
+        }
+
+        .room-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 24px rgba(16, 185, 129, 0.2);
+            border-color: var(--primary);
+        }
+
+        .room-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .room-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--primary-dark);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .room-count {
+            background: var(--primary);
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .container-list {
+            space-y: 0.75rem;
+        }
+
+        .container-item {
+            background: var(--surface);
+            border-radius: calc(var(--radius) / 2);
+            padding: 1rem;
+            border: 1px solid var(--border);
+            margin-bottom: 0.75rem;
+            transition: var(--transition);
+        }
+
+        .container-item:hover {
+            background: var(--hover);
+            border-color: var(--primary);
+        }
+
+        .container-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+        }
+
+        .container-name {
+            font-weight: 600;
+            color: var(--text);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .item-count {
+            background: var(--accent);
+            color: var(--primary-dark);
+            padding: 0.2rem 0.6rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .items-preview {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+        }
+
+        .item-tag {
+            background: var(--accent-light);
+            color: var(--primary-dark);
+            padding: 0.25rem 0.5rem;
+            border-radius: 15px;
+            font-size: 0.75rem;
+            border: 1px solid var(--border);
+            transition: var(--transition);
+        }
+
+        .item-tag:hover {
+            background: var(--primary);
+            color: white;
+            cursor: pointer;
+        }
+
+        .empty-room {
+            text-align: center;
+            color: var(--text-muted);
+            font-style: italic;
+            padding: 2rem;
+            border: 2px dashed var(--border);
+            border-radius: var(--radius);
+            background: var(--surface-alt);
         }
 
         /* Item detail view */
@@ -1173,6 +1400,16 @@
                     </div>
                 </div>
             </div>
+
+            <!-- Inventar-Übersicht -->
+            <div class="section">
+                <div class="section-header">
+                    <span>📊 Inventar-Übersicht</span>
+                </div>
+                <div class="section-content active">
+                    <div id="inventoryOverview"></div>
+                </div>
+            </div>
         </div>
 
         <!-- Add Item Tab -->
@@ -1242,9 +1479,21 @@
                     </select>
                 </div>
                 <canvas id="roomCanvas" width="600" height="400"></canvas>
-                <p style="margin-top: 1rem; color: var(--text-muted); font-size: 0.9rem;">
-                    Zeichne frei, erstelle Rechtecke (anklicken zum Bearbeiten), platziere Gegenstände
-                </p>
+                <div style="margin-top: 1rem; padding: 1rem; background: var(--accent-light); border-radius: var(--radius); border: 1px solid var(--border);">
+                    <h4 style="color: var(--primary-dark); margin-bottom: 0.5rem;">📝 Super Einfache Bedienung:</h4>
+                    <ul style="color: var(--text); margin: 0; padding-left: 1.5rem; line-height: 1.8;">
+                        <li><strong>✏️ Zeichnen:</strong> Freies Zeichnen mit dem Stift-Modus</li>
+                        <li><strong>🆕 Neues Rechteck:</strong> Im Rechteck-Modus einfach ziehen = neuer Bereich</li>
+                        <li><strong>📌 Auswählen:</strong> Auf vorhandenes Rechteck klicken</li>
+                        <li><strong>🔄 Größe ändern:</strong> An den grünen Kreisen in den Ecken ziehen</li>
+                        <li><strong>↔️ Verschieben:</strong> Rechteck in der Mitte packen und ziehen</li>
+                        <li><strong>✏️ Umbenennen:</strong> Kurz warten nach Auswahl, dann nochmal klicken</li>
+                        <li><strong>📍 Items platzieren:</strong> Im Gegenstand-Modus einfach klicken</li>
+                    </ul>
+                    <div style="margin-top: 1rem; padding: 0.75rem; background: var(--surface); border-radius: calc(var(--radius) / 2); border: 1px solid var(--border);">
+                        <strong style="color: var(--primary);">💡 Tipp:</strong> Rechtecke haben abgerundete Ecken und sind super einfach zu bearbeiten!
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -1531,13 +1780,36 @@
             });
 
             // Show selected tab
-            document.getElementById(`${tabName}-tab`).classList.add('active');
-            event.target.classList.add('active');
+            const targetTab = document.getElementById(`${tabName}-tab`);
+            if (targetTab) {
+                targetTab.classList.add('active');
+            }
+
+            // Find and activate the clicked nav tab
+            document.querySelectorAll('.nav-tab').forEach(tab => {
+                if (tab.textContent.includes(getTabDisplayName(tabName))) {
+                    tab.classList.add('active');
+                }
+            });
 
             // Initialize specific tab features
             if (tabName === 'rooms') {
                 initRoomCanvas();
+            } else if (tabName === 'search') {
+                renderInventoryOverview();
             }
+        }
+
+        function getTabDisplayName(tabName) {
+            const tabNames = {
+                'voice': '🎤 Sprache',
+                'search': '🔍 Suche',
+                'add': '➕ Hinzufügen',
+                'rooms': '🏠 Grundriss',
+                'inventory': '📦 Inventar',
+                'settings': '⚙️ Settings'
+            };
+            return tabNames[tabName] || tabName;
         }
 
         // ==================== ENHANCED SPEECH RECOGNITION ====================
@@ -2550,6 +2822,7 @@
             }
         }
 
+        // ==================== SUPER SIMPLE CANVAS LOGIC ====================
         function handleCanvasMouseDown(e) {
             const rect = canvas.getBoundingClientRect();
             const x = (e.clientX - rect.left) * (canvas.width / rect.width);
@@ -2562,34 +2835,47 @@
                 isDrawing = true;
                 ctx.beginPath();
                 ctx.moveTo(x, y);
-            } else if (canvasMode === 'rectangle') {
-                // Check if clicking on existing rectangle
+                return;
+            }
+
+            if (canvasMode === 'rectangle') {
+                // Check if we clicked on an existing rectangle
                 const clickedRect = getRectangleAt(x, y);
+
                 if (clickedRect) {
+                    // Select the rectangle
                     selectedRectangle = clickedRect;
-                    // Check if clicking on resize handle
+
+                    // Check if we clicked on a resize handle
                     const handle = getResizeHandle(x, y, clickedRect);
                     if (handle) {
                         isResizing = true;
                         resizeHandle = handle;
+                        canvas.style.cursor = getResizeCursor(handle);
                     } else {
+                        // We clicked inside the rectangle - prepare to move it
                         isDragging = true;
+                        canvas.style.cursor = 'move';
                     }
                 } else {
-                    // Start drawing new rectangle
+                    // No rectangle clicked - start creating a new one
                     isDrawing = true;
                     selectedRectangle = {
                         x: x,
                         y: y,
                         width: 0,
                         height: 0,
-                        name: '',
-                        id: generateId('RECT')
+                        name: `Bereich ${rectangles.length + 1}`,
+                        id: generateId('RECT'),
+                        cornerRadius: 12
                     };
+                    canvas.style.cursor = 'crosshair';
                 }
                 redrawCanvas();
-            } else if (canvasMode === 'item') {
-                // Place item on canvas
+                return;
+            }
+
+            if (canvasMode === 'item') {
                 const itemName = prompt('Welcher Gegenstand soll hier platziert werden?');
                 if (itemName) {
                     placeItemOnCanvas(x, y, itemName);
@@ -2603,32 +2889,40 @@
             const y = (e.clientY - rect.top) * (canvas.height / rect.height);
 
             if (canvasMode === 'draw' && isDrawing) {
-                ctx.lineWidth = 2;
+                ctx.lineWidth = 3;
                 ctx.lineCap = 'round';
-                ctx.strokeStyle = '#2563eb';
+                ctx.strokeStyle = '#10b981';
+                ctx.shadowColor = 'rgba(16, 185, 129, 0.3)';
+                ctx.shadowBlur = 3;
                 ctx.lineTo(x, y);
                 ctx.stroke();
                 ctx.beginPath();
                 ctx.moveTo(x, y);
-            } else if (canvasMode === 'rectangle') {
+                return;
+            }
+
+            if (canvasMode === 'rectangle') {
                 if (isDrawing && selectedRectangle) {
-                    // Update rectangle size
+                    // Creating new rectangle
                     selectedRectangle.width = x - selectedRectangle.x;
                     selectedRectangle.height = y - selectedRectangle.y;
                     redrawCanvas();
+                } else if (isResizing && selectedRectangle && resizeHandle) {
+                    // Resizing existing rectangle
+                    resizeRectangle(selectedRectangle, resizeHandle, x, y);
+                    redrawCanvas();
                 } else if (isDragging && selectedRectangle) {
-                    // Move rectangle
+                    // Moving existing rectangle
                     const deltaX = x - startX;
                     const deltaY = y - startY;
-                    selectedRectangle.x += deltaX;
-                    selectedRectangle.y += deltaY;
+                    selectedRectangle.x = Math.max(0, Math.min(selectedRectangle.x + deltaX, canvas.width - selectedRectangle.width));
+                    selectedRectangle.y = Math.max(0, Math.min(selectedRectangle.y + deltaY, canvas.height - selectedRectangle.height));
                     startX = x;
                     startY = y;
                     redrawCanvas();
-                } else if (isResizing && selectedRectangle && resizeHandle) {
-                    // Resize rectangle
-                    resizeRectangle(selectedRectangle, resizeHandle, x, y);
-                    redrawCanvas();
+                } else {
+                    // Just hovering - update cursor
+                    updateCursorForPosition(x, y);
                 }
             }
         }
@@ -2637,69 +2931,89 @@
             if (canvasMode === 'draw' && isDrawing) {
                 isDrawing = false;
                 ctx.beginPath();
+                ctx.shadowBlur = 0;
                 saveCanvasState();
-            } else if (canvasMode === 'rectangle') {
+                return;
+            }
+
+            if (canvasMode === 'rectangle') {
                 if (isDrawing && selectedRectangle) {
-                    // Normalize rectangle (handle negative width/height)
-                    if (selectedRectangle.width < 0) {
-                        selectedRectangle.x += selectedRectangle.width;
-                        selectedRectangle.width = Math.abs(selectedRectangle.width);
-                    }
-                    if (selectedRectangle.height < 0) {
-                        selectedRectangle.y += selectedRectangle.height;
-                        selectedRectangle.height = Math.abs(selectedRectangle.height);
-                    }
+                    // Finished creating new rectangle
+                    normalizeRectangle(selectedRectangle);
 
-                    // Only add if rectangle has meaningful size
-                    if (selectedRectangle.width > 10 && selectedRectangle.height > 10) {
-                        const name = prompt('Name für diesen Bereich:') || `Bereich ${rectangles.length + 1}`;
-                        selectedRectangle.name = name;
+                    if (selectedRectangle.width > 20 && selectedRectangle.height > 20) {
                         addRectangle(selectedRectangle);
+                        showNotification(`Bereich "${selectedRectangle.name}" erstellt!`, 'success');
+                    } else {
+                        selectedRectangle = null;
+                        showNotification('Rechteck zu klein - versuchen Sie es nochmal', 'warning');
                     }
-
-                    isDrawing = false;
-                    redrawCanvas();
-                    saveCanvasState();
+                } else if (isResizing) {
+                    showNotification('Größe geändert', 'info');
+                } else if (isDragging) {
+                    showNotification('Position geändert', 'info');
                 }
-                isDragging = false;
+
+                isDrawing = false;
                 isResizing = false;
+                isDragging = false;
                 resizeHandle = null;
+                canvas.style.cursor = 'crosshair';
+
+                redrawCanvas();
+                saveCanvasState();
             }
         }
 
         function handleCanvasClick(e) {
-            if (canvasMode === 'rectangle') {
-                const rect = canvas.getBoundingClientRect();
-                const x = (e.clientX - rect.left) * (canvas.width / rect.width);
-                const y = (e.clientY - rect.top) * (canvas.height / rect.height);
-
-                const clickedRect = getRectangleAt(x, y);
-                if (clickedRect && clickedRect === selectedRectangle) {
-                    // Double-click to rename
-                    const newName = prompt('Neuer Name:', clickedRect.name);
-                    if (newName !== null) {
-                        clickedRect.name = newName;
-                        redrawCanvas();
-                        saveCanvasState();
+            // Double-click to rename (only when not dragging/resizing)
+            if (canvasMode === 'rectangle' && selectedRectangle && !isDragging && !isResizing) {
+                setTimeout(() => {
+                    if (!isDragging && !isResizing) {
+                        const newName = prompt('Neuer Name für den Bereich:', selectedRectangle.name);
+                        if (newName !== null && newName.trim()) {
+                            selectedRectangle.name = newName.trim();
+                            redrawCanvas();
+                            saveCanvasState();
+                            showNotification(`Bereich umbenannt zu "${newName}"`, 'success');
+                        }
                     }
-                }
+                }, 200);
+            }
+        }
+
+        function normalizeRectangle(rect) {
+            if (rect.width < 0) {
+                rect.x += rect.width;
+                rect.width = Math.abs(rect.width);
+            }
+            if (rect.height < 0) {
+                rect.y += rect.height;
+                rect.height = Math.abs(rect.height);
             }
         }
 
         function getRectangleAt(x, y) {
-            return rectangles.find(rect =>
-                x >= rect.x && x <= rect.x + rect.width &&
-                y >= rect.y && y <= rect.y + rect.height
-            );
+            // Check from top to bottom to get the topmost rectangle
+            for (let i = rectangles.length - 1; i >= 0; i--) {
+                const rect = rectangles[i];
+                if (x >= rect.x && x <= rect.x + rect.width &&
+                    y >= rect.y && y <= rect.y + rect.height) {
+                    return rect;
+                }
+            }
+            return null;
         }
 
         function getResizeHandle(x, y, rect) {
-            const handleSize = 10;
+            const handleSize = 15; // Larger hit area for easier interaction
+            const tolerance = 10;
+
             const handles = {
-                'nw': { x: rect.x - handleSize/2, y: rect.y - handleSize/2 },
-                'ne': { x: rect.x + rect.width - handleSize/2, y: rect.y - handleSize/2 },
-                'sw': { x: rect.x - handleSize/2, y: rect.y + rect.height - handleSize/2 },
-                'se': { x: rect.x + rect.width - handleSize/2, y: rect.y + rect.height - handleSize/2 }
+                'nw': { x: rect.x - tolerance, y: rect.y - tolerance },
+                'ne': { x: rect.x + rect.width - tolerance, y: rect.y - tolerance },
+                'sw': { x: rect.x - tolerance, y: rect.y + rect.height - tolerance },
+                'se': { x: rect.x + rect.width - tolerance, y: rect.y + rect.height - tolerance }
             };
 
             for (const [handle, pos] of Object.entries(handles)) {
@@ -2711,118 +3025,199 @@
             return null;
         }
 
+        function updateCursorForPosition(x, y) {
+            const clickedRect = getRectangleAt(x, y);
+
+            if (clickedRect) {
+                const handle = getResizeHandle(x, y, clickedRect);
+                if (handle) {
+                    canvas.style.cursor = getResizeCursor(handle);
+                } else {
+                    canvas.style.cursor = 'move';
+                }
+            } else {
+                canvas.style.cursor = 'crosshair';
+            }
+        }
+
+        function getResizeCursor(handle) {
+            const cursors = {
+                'nw': 'nw-resize',
+                'ne': 'ne-resize',
+                'sw': 'sw-resize',
+                'se': 'se-resize'
+            };
+            return cursors[handle] || 'default';
+        }
+
         function resizeRectangle(rect, handle, x, y) {
+            const minSize = 30; // Minimum rectangle size
+
             switch (handle) {
                 case 'nw':
                     const newWidth = rect.width + (rect.x - x);
                     const newHeight = rect.height + (rect.y - y);
-                    if (newWidth > 10) {
+                    if (newWidth > minSize) {
                         rect.width = newWidth;
                         rect.x = x;
                     }
-                    if (newHeight > 10) {
+                    if (newHeight > minSize) {
                         rect.height = newHeight;
                         rect.y = y;
                     }
                     break;
                 case 'ne':
-                    rect.width = x - rect.x;
+                    const newWidth2 = x - rect.x;
                     const newHeight2 = rect.height + (rect.y - y);
-                    if (newHeight2 > 10) {
+                    if (newWidth2 > minSize) {
+                        rect.width = newWidth2;
+                    }
+                    if (newHeight2 > minSize) {
                         rect.height = newHeight2;
                         rect.y = y;
                     }
                     break;
                 case 'sw':
                     const newWidth3 = rect.width + (rect.x - x);
-                    if (newWidth3 > 10) {
+                    const newHeight3 = y - rect.y;
+                    if (newWidth3 > minSize) {
                         rect.width = newWidth3;
                         rect.x = x;
                     }
-                    rect.height = y - rect.y;
+                    if (newHeight3 > minSize) {
+                        rect.height = newHeight3;
+                    }
                     break;
                 case 'se':
-                    rect.width = x - rect.x;
-                    rect.height = y - rect.y;
+                    const newWidth4 = x - rect.x;
+                    const newHeight4 = y - rect.y;
+                    if (newWidth4 > minSize) {
+                        rect.width = newWidth4;
+                    }
+                    if (newHeight4 > minSize) {
+                        rect.height = newHeight4;
+                    }
                     break;
             }
+
+            // Keep rectangle within canvas bounds
+            rect.x = Math.max(0, Math.min(rect.x, canvas.width - rect.width));
+            rect.y = Math.max(0, Math.min(rect.y, canvas.height - rect.height));
         }
 
-        function addRectangle(rect) {
-            rectangles.push(rect);
-        }
-
-        function placeItemOnCanvas(x, y, itemName) {
-            ctx.fillStyle = '#059669';
-            ctx.fillRect(x - 5, y - 5, 10, 10);
-            ctx.fillStyle = '#000';
-            ctx.font = '12px Arial';
-            ctx.fillText(itemName, x + 10, y + 5);
-            saveCanvasState();
-        }
-
-        function clearCanvas() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            rectangles = [];
-            selectedRectangle = null;
-            saveCanvasState();
-        }
-
-        function redrawCanvas() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-            // Draw saved canvas content first
-            if (currentRoom && roomLayouts[currentRoom] && roomLayouts[currentRoom].imageData) {
-                const img = new Image();
-                img.onload = () => {
-                    ctx.drawImage(img, 0, 0);
-                    drawRectangles();
-                };
-                img.src = roomLayouts[currentRoom].imageData;
-            } else {
-                drawRectangles();
-            }
+        function drawRoundedRect(ctx, x, y, width, height, radius) {
+            ctx.beginPath();
+            ctx.moveTo(x + radius, y);
+            ctx.lineTo(x + width - radius, y);
+            ctx.quadraticCurveTo(x + width, y, x + width, y + radius);
+            ctx.lineTo(x + width, y + height - radius);
+            ctx.quadraticCurveTo(x + width, y + height, x + width - radius, y + height);
+            ctx.lineTo(x + radius, y + height);
+            ctx.quadraticCurveTo(x, y + height, x, y + height - radius);
+            ctx.lineTo(x, y + radius);
+            ctx.quadraticCurveTo(x, y, x + radius, y);
+            ctx.closePath();
         }
 
         function drawRectangles() {
-            rectangles.forEach(rect => {
-                // Draw rectangle
-                ctx.strokeStyle = rect === selectedRectangle ? '#dc2626' : '#2563eb';
-                ctx.lineWidth = rect === selectedRectangle ? 3 : 2;
-                ctx.strokeRect(rect.x, rect.y, rect.width, rect.height);
+            rectangles.forEach((rect, index) => {
+                const isSelected = rect === selectedRectangle;
 
-                // Fill with semi-transparent color
-                ctx.fillStyle = rect === selectedRectangle ? 'rgba(220, 38, 38, 0.1)' : 'rgba(37, 99, 235, 0.1)';
-                ctx.fillRect(rect.x, rect.y, rect.width, rect.height);
+                // Draw rounded rectangle with gradient
+                const gradient = ctx.createLinearGradient(rect.x, rect.y, rect.x, rect.y + rect.height);
 
-                // Draw name
-                ctx.fillStyle = '#000';
-                ctx.font = '14px Arial';
-                ctx.fillText(rect.name, rect.x + 5, rect.y + 20);
+                if (isSelected) {
+                    gradient.addColorStop(0, 'rgba(16, 185, 129, 0.3)');
+                    gradient.addColorStop(1, 'rgba(16, 185, 129, 0.1)');
+                } else {
+                    gradient.addColorStop(0, 'rgba(16, 185, 129, 0.15)');
+                    gradient.addColorStop(1, 'rgba(16, 185, 129, 0.05)');
+                }
+
+                // Fill rounded rectangle
+                drawRoundedRect(ctx, rect.x, rect.y, rect.width, rect.height, rect.cornerRadius || 12);
+                ctx.fillStyle = gradient;
+                ctx.fill();
+
+                // Stroke rounded rectangle
+                drawRoundedRect(ctx, rect.x, rect.y, rect.width, rect.height, rect.cornerRadius || 12);
+                ctx.strokeStyle = isSelected ? '#059669' : '#10b981';
+                ctx.lineWidth = isSelected ? 4 : 2;
+                ctx.setLineDash(isSelected ? [5, 5] : []);
+                ctx.stroke();
+                ctx.setLineDash([]); // Reset line dash
+
+                // Draw name with better typography
+                ctx.fillStyle = '#064e3b';
+                ctx.font = 'bold 16px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
+                ctx.textBaseline = 'top';
+
+                // Add text background for better readability
+                const textMetrics = ctx.measureText(rect.name);
+                const textPadding = 8;
+                const textBgX = rect.x + 12;
+                const textBgY = rect.y + 12;
+                const textBgWidth = textMetrics.width + textPadding * 2;
+                const textBgHeight = 24;
+
+                // Text background with rounded corners
+                drawRoundedRect(ctx, textBgX, textBgY, textBgWidth, textBgHeight, 6);
+                ctx.fillStyle = 'rgba(255, 255, 255, 0.9)';
+                ctx.fill();
+
+                // Text border
+                drawRoundedRect(ctx, textBgX, textBgY, textBgWidth, textBgHeight, 6);
+                ctx.strokeStyle = '#10b981';
+                ctx.lineWidth = 1;
+                ctx.stroke();
+
+                // Actual text
+                ctx.fillStyle = '#064e3b';
+                ctx.fillText(rect.name, textBgX + textPadding, textBgY + 4);
 
                 // Draw resize handles for selected rectangle
-                if (rect === selectedRectangle) {
+                if (isSelected) {
                     drawResizeHandles(rect);
                 }
             });
         }
 
         function drawResizeHandles(rect) {
-            const handleSize = 10;
+            const handleSize = 12;
+            const handleOffset = handleSize / 2;
+
             const handles = [
-                { x: rect.x - handleSize/2, y: rect.y - handleSize/2 }, // nw
-                { x: rect.x + rect.width - handleSize/2, y: rect.y - handleSize/2 }, // ne
-                { x: rect.x - handleSize/2, y: rect.y + rect.height - handleSize/2 }, // sw
-                { x: rect.x + rect.width - handleSize/2, y: rect.y + rect.height - handleSize/2 } // se
+                { x: rect.x - handleOffset, y: rect.y - handleOffset, type: 'nw' },
+                { x: rect.x + rect.width - handleOffset, y: rect.y - handleOffset, type: 'ne' },
+                { x: rect.x - handleOffset, y: rect.y + rect.height - handleOffset, type: 'sw' },
+                { x: rect.x + rect.width - handleOffset, y: rect.y + rect.height - handleOffset, type: 'se' }
             ];
 
-            ctx.fillStyle = '#2563eb';
-            ctx.strokeStyle = '#fff';
-            ctx.lineWidth = 2;
-
             handles.forEach(handle => {
-                ctx.fillRect(handle.x, handle.y, handleSize, handleSize);
-                ctx.strokeRect(handle.x, handle.y, handleSize, handleSize);
+                // Handle shadow
+                ctx.beginPath();
+                ctx.arc(handle.x + handleOffset + 1, handle.y + handleOffset + 1, handleOffset, 0, 2 * Math.PI);
+                ctx.fillStyle = 'rgba(0, 0, 0, 0.2)';
+                ctx.fill();
+
+                // Handle background
+                ctx.beginPath();
+                ctx.arc(handle.x + handleOffset, handle.y + handleOffset, handleOffset, 0, 2 * Math.PI);
+                ctx.fillStyle = '#10b981';
+                ctx.fill();
+
+                // Handle border
+                ctx.beginPath();
+                ctx.arc(handle.x + handleOffset, handle.y + handleOffset, handleOffset, 0, 2 * Math.PI);
+                ctx.strokeStyle = '#ffffff';
+                ctx.lineWidth = 3;
+                ctx.stroke();
+
+                // Handle inner circle for better visual feedback
+                ctx.beginPath();
+                ctx.arc(handle.x + handleOffset, handle.y + handleOffset, handleOffset - 3, 0, 2 * Math.PI);
+                ctx.fillStyle = '#059669';
+                ctx.fill();
             });
         }
 
@@ -3405,31 +3800,43 @@
             renderInventory();
         }
 
-        // ==================== STATISTICS ====================
+        // ==================== CORRECTED STATISTICS ====================
         function updateStats() {
             let totalItems = 0;
             let totalRooms = 0;
             let totalContainers = 0;
 
-            function countItems(obj, level = 0) {
+            function countInventory(obj, level = 0) {
                 for (const [key, value] of Object.entries(obj)) {
-                    if (key === '_items') {
+                    // Skip meta data
+                    if (key === '_items' || key === '_meta' || key.endsWith('_meta')) {
+                        continue;
+                    }
+
+                    if (Array.isArray(value)) {
+                        // This is a container with items
                         totalItems += value.length;
-                    } else if (key.endsWith('_meta')) {
-                        if (value.type === 'room') totalRooms++;
-                        else if (value.type === 'container') totalContainers++;
-                    } else if (Array.isArray(value)) {
-                        totalItems += value.length;
-                        if (level > 0) totalContainers++;
-                    } else if (typeof value === 'object') {
-                        if (level === 0) totalRooms++;
-                        else if (level > 0) totalContainers++;
-                        countItems(value, level + 1);
+                        totalContainers++;
+                    } else if (typeof value === 'object' && value !== null) {
+                        // This is a room or furniture
+                        if (level === 0) {
+                            totalRooms++;
+                        } else {
+                            totalContainers++;
+                        }
+
+                        // Check for _items array in this object
+                        if (value._items && Array.isArray(value._items)) {
+                            totalItems += value._items.length;
+                        }
+
+                        // Recursively count deeper levels
+                        countInventory(value, level + 1);
                     }
                 }
             }
 
-            countItems(inventory);
+            countInventory(inventory);
 
             const totalItemsEl = document.getElementById('totalItems');
             const totalRoomsEl = document.getElementById('totalRooms');
@@ -3438,6 +3845,136 @@
             if (totalItemsEl) totalItemsEl.textContent = totalItems;
             if (totalRoomsEl) totalRoomsEl.textContent = totalRooms;
             if (totalContainersEl) totalContainersEl.textContent = totalContainers;
+
+            log(`Stats updated: ${totalItems} items, ${totalRooms} rooms, ${totalContainers} containers`);
+        }
+
+        // ==================== INVENTORY OVERVIEW FOR SEARCH TAB ====================
+        function renderInventoryOverview() {
+            const container = document.getElementById('inventoryOverview');
+            if (!container) return;
+
+            container.innerHTML = '';
+
+            if (Object.keys(inventory).length === 0) {
+                container.innerHTML = `
+                    <div class="empty-room">
+                        <h3>📦 Noch kein Inventar vorhanden</h3>
+                        <p>Fügen Sie Gegenstände hinzu, um eine Übersicht zu sehen.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            const overviewDiv = document.createElement('div');
+            overviewDiv.className = 'inventory-overview';
+
+            // Process each room
+            Object.entries(inventory).forEach(([roomName, roomData]) => {
+                if (roomName === '_meta' || roomName.endsWith('_meta')) return;
+
+                const roomCard = document.createElement('div');
+                roomCard.className = 'room-card';
+
+                let totalRoomItems = 0;
+                const containers = [];
+
+                // Process room data
+                function processRoomData(data, path = []) {
+                    Object.entries(data).forEach(([key, value]) => {
+                        if (key === '_items' || key === '_meta' || key.endsWith('_meta')) {
+                            if (key === '_items' && Array.isArray(value)) {
+                                totalRoomItems += value.length;
+                                containers.push({
+                                    name: path.length > 0 ? path.join(' → ') : 'Lose Gegenstände',
+                                    items: value,
+                                    icon: '📋'
+                                });
+                            }
+                            return;
+                        }
+
+                        if (Array.isArray(value)) {
+                            totalRoomItems += value.length;
+                            containers.push({
+                                name: [...path, key].join(' → '),
+                                items: value,
+                                icon: '📦'
+                            });
+                        } else if (typeof value === 'object' && value !== null) {
+                            if (value._items && Array.isArray(value._items)) {
+                                totalRoomItems += value._items.length;
+                                containers.push({
+                                    name: [...path, key].join(' → '),
+                                    items: value._items,
+                                    icon: '🪑'
+                                });
+                            }
+                            processRoomData(value, [...path, key]);
+                        }
+                    });
+                }
+
+                processRoomData(roomData);
+
+                roomCard.innerHTML = `
+                    <div class="room-header">
+                        <div class="room-title">
+                            🏠 ${roomName}
+                        </div>
+                        <div class="room-count">${totalRoomItems} Gegenstände</div>
+                    </div>
+                    <div class="container-list" id="containers-${roomName}"></div>
+                `;
+
+                const containerList = roomCard.querySelector(`#containers-${roomName}`);
+
+                if (containers.length === 0) {
+                    containerList.innerHTML = `
+                        <div style="text-align: center; color: var(--text-muted); padding: 1rem; font-style: italic;">
+                            Keine Gegenstände in diesem Raum
+                        </div>
+                    `;
+                } else {
+                    containers.forEach(container => {
+                        const containerItem = document.createElement('div');
+                        containerItem.className = 'container-item';
+
+                        const itemsPreview = container.items.slice(0, 3).map(item => {
+                            const itemName = typeof item === 'object' ? item.name : item;
+                            return `<span class="item-tag" onclick="searchForItem('${itemName}')" title="Nach '${itemName}' suchen">${itemName}</span>`;
+                        }).join('');
+
+                        const moreItems = container.items.length > 3 ?
+                            `<span class="item-tag" style="background: var(--accent); color: var(--primary-dark);">+${container.items.length - 3} weitere</span>` : '';
+
+                        containerItem.innerHTML = `
+                            <div class="container-header">
+                                <div class="container-name">
+                                    ${container.icon} ${container.name}
+                                </div>
+                                <div class="item-count">${container.items.length}</div>
+                            </div>
+                            <div class="items-preview">
+                                ${itemsPreview}
+                                ${moreItems}
+                            </div>
+                        `;
+
+                        containerList.appendChild(containerItem);
+                    });
+                }
+
+                overviewDiv.appendChild(roomCard);
+            });
+
+            container.appendChild(overviewDiv);
+        }
+
+        function searchForItem(itemName) {
+            document.getElementById('searchInput').value = itemName;
+            handleSearchInput();
+            showNotification(`Suche nach "${itemName}"`, 'info');
         }
 
         // ==================== SETTINGS MANAGEMENT ====================
@@ -3578,6 +4115,7 @@
 
         function updateUI() {
             renderInventory();
+            renderInventoryOverview();
             updateStats();
             updateCategoryFilters();
             updateRoomSelector();
