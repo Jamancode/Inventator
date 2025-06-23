@@ -1813,11 +1813,23 @@ Wichtigkeit</textarea>
                 const savedData = localStorage.getItem('inventarProData');
                 if (savedData) {
                     const parsed = JSON.parse(savedData);
-                    Object.assign(AppState, parsed);
+                    // Ensure parsed is an object and not null before assigning
+                    if (parsed && typeof parsed === 'object') {
+                        Object.assign(AppState, parsed);
+                    } else {
+                        // This case might indicate corrupted data that parsed to null or non-object
+                        console.warn('Parsed data from localStorage is not a valid object. Using defaults.');
+                        // Optionally, trigger a save of default state here if desired
+                        // saveDataToStorage(); // Be cautious with this, could overwrite if there's a temporary issue
+                    }
                 }
             } catch (error) {
-                console.error('Error loading data:', error);
-                showNotification('Fehler beim Laden der Daten', 'error');
+                console.error('Error loading or parsing data from localStorage:', error);
+                showNotification('Fehler beim Laden der Daten. Standardeinstellungen werden verwendet.', 'error');
+                // In case of error, AppState retains its initial defaults.
+                // Optionally, explicitly save the default state:
+                // AppState = { ...initial default AppState structure ... }; // Re-initialize if needed
+                // saveDataToStorage(); // Then save this default state
             }
         }
 
@@ -2034,7 +2046,7 @@ Wichtigkeit</textarea>
         // ===== ID Generation (Short IDs from bottom up) =====
         function generateItemId() {
             const id = AppState.nextId++;
-    // saveDataToStorage(); // NICHT hier bei jeder ID-Generierung speichern
+            // saveDataToStorage(); // NICHT hier bei jeder ID-Generierung speichern
             return id.toString();
         }
 
